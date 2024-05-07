@@ -10,7 +10,8 @@ public class Player extends JLabel implements MoveAble {
 	private ImageIcon playerStay, playerDownStep1, playerDownStep2,
 	playerRightStep1,playerRightStep2,playerRightStep3,playerRightStay,
 	playerLeftStep1,playerLeftStep3,playerLeftStay,
-	playerUpStep1,playerUpStep3,playerUpStay; // Down
+	playerUpStep1,playerUpStep3,playerUpStay,
+	playerEye1,playerEye2,playerEye3; // Down
 	
 	// 움직임
 	private boolean left;
@@ -235,10 +236,9 @@ public class Player extends JLabel implements MoveAble {
 	}
 	@Override
 	public void stay() {
-		while(true) {
+	
 			setIcon(playerStay);
-			
-		}
+		
 	}
 	public void rightStay() {
 		setIcon(playerRightStay);
@@ -265,6 +265,9 @@ public class Player extends JLabel implements MoveAble {
 		playerUpStep1 = new ImageIcon("pjs/player_ver3_Up_step1.png");
 		playerUpStep3 = new ImageIcon("pjs/player_ver3_Up 2.png");
 		playerUpStay = new ImageIcon("pjs/player_ver3__head_+_body_UpStay.png");
+		playerEye1= new ImageIcon("pjs/player_ver3_Eye1.png");
+		playerEye2 = new ImageIcon("pjs/player_ver3_Eye2.png");
+		playerEye3 = new ImageIcon("pjs/player_ver3_Eye3.png");
 		left = false;
 		right = false;
 		up = false;
@@ -278,6 +281,23 @@ public class Player extends JLabel implements MoveAble {
 		setLocation(x, y);
 
 	}
-
+	private void eye() {
+		// 눈깜빡임
+		while(true){
+			
+		
+		try {
+			Thread.sleep(3000);
+			setIcon(playerEye1);
+			Thread.sleep(3000);
+			setIcon(playerEye2);
+			Thread.sleep(3000);
+			setIcon(playerEye3);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		}
+	}
+		
 
 } // end of player class
