@@ -6,4 +6,5 @@ public interface MoveAble {
 	void right();
 	void up();
 	void down();
+	void stay();
 }
