@@ -7,17 +7,59 @@ public class Player extends JLabel implements MoveAble {
 
 	private int x;
 	private int y;
-	private ImageIcon playerStay, playerDownStep1, playerDownStep2,
-	playerRightStep1,playerRightStep2,playerRightStep3,playerRightStay,
-	playerLeftStep1,playerLeftStep3,playerLeftStay,
-	playerUpStep1,playerUpStep3,playerUpStay,
-	playerEye1,playerEye2,playerEye3; // Down
-	
+	private ImageIcon playerStay, playerDownStep1, playerDownStep2, playerRightStep1, playerRightStep2,
+			playerRightStep3, playerRightStay, playerLeftStep1, playerLeftStep3, playerLeftStay, playerUpStep1,
+			playerUpStep3, playerUpStay, playerEye1, playerEye2, playerEye3, playerBag; // Down
+
 	// 움직임
 	private boolean left;
 	private boolean right;
 	private boolean up;
 	private boolean down;
+	private boolean bagFlag ;
+
+	private boolean isOpenEye = true;
+	boolean isStay = (left == false) && (right == false) && (up == false) && (down == false);
+
+	private final int SPEED = 4;
+
+	public Player() {
+		initData();
+		setInitLayout();
+		eye();
+	}
+
+	private void initData() {
+
+		playerStay = new ImageIcon("pjs/player_ver3.png");
+		playerDownStep1 = new ImageIcon("pjs/player_ver3_down_1.png");
+		playerDownStep2 = new ImageIcon("pjs/player_ver3_down_2.png");
+		playerRightStep1 = new ImageIcon("pjs/player_ver3_Right_1.png");
+		playerRightStep2 = new ImageIcon("pjs/player_ver3_Right_2.png");
+		playerRightStep3 = new ImageIcon("pjs/player_ver3_Right_3.png");
+		playerRightStay = new ImageIcon("pjs/player_ver3_Right_Stay.png");
+		playerLeftStep1 = new ImageIcon("pjs/player_ver3_Left_1.png");
+		playerLeftStep3 = new ImageIcon("pjs/player_ver3_Left_3.png");
+		playerLeftStay = new ImageIcon("pjs/player_ver3_Left_Stay.png");
+		playerUpStep1 = new ImageIcon("pjs/player_ver3_Up_step1.png");
+		playerUpStep3 = new ImageIcon("pjs/player_ver3_Up 2.png");
+		playerUpStay = new ImageIcon("pjs/player_ver3__head_+_body_UpStay.png");
+		playerEye1 = new ImageIcon("pjs/player_ver3_Eye1.png");
+		playerEye2 = new ImageIcon("pjs/player_ver3_Eye2.png");
+		playerEye3 = new ImageIcon("pjs/player_ver3_Eye3.png");
+		playerBag = new ImageIcon("pjs/1.png");
+		left = false;
+		right = false;
+		up = false;
+		down = false;
+	}
+
+	private void setInitLayout() {
+		setIcon(playerStay);
+		setSize(70, 100);
+		setLocation(x, y);
+
+	}
 
 	public int getX() {
 		return x;
@@ -94,14 +136,8 @@ public class Player extends JLabel implements MoveAble {
 	public int getSPEED() {
 		return SPEED;
 	}
-
-	// 플레이어 속도
-	private final int SPEED = 4;
-
-	public Player() {
-		initData();
-		setInitLayout();
-
+	public void setBagFlag(boolean bagFlag) {
+		this.bagFlag = bagFlag;
 	}
 
 	@Override
@@ -113,18 +149,16 @@ public class Player extends JLabel implements MoveAble {
 			public void run() {
 				while (left) {
 					x = x - SPEED;
-					if( x / 10%4 == 2 ) {
+					if (x / 10 % 4 == 2) {
 
 						setIcon(playerLeftStep1);
-						
-					}else {
-						setIcon(playerLeftStep3);						
-					} 
-				 
-					
-					
+
+					} else {
+						setIcon(playerLeftStep3);
+					}
+
 					setLocation(x, y);
-					
+
 					try {
 						Thread.sleep(25);
 					} catch (InterruptedException e) {
@@ -145,18 +179,16 @@ public class Player extends JLabel implements MoveAble {
 			public void run() {
 				while (right) {
 					x = x + SPEED;
-					if( x / 10%4 == 2 ) {
+					if (x / 10 % 4 == 2) {
 
 						setIcon(playerRightStep1);
-						
-					}else {
-						setIcon(playerRightStep3);						
-					} 
-				 
-					
-					
+
+					} else {
+						setIcon(playerRightStep3);
+					}
+
 					setLocation(x, y);
-					
+
 					try {
 						Thread.sleep(25);
 					} catch (InterruptedException e) {
@@ -166,8 +198,7 @@ public class Player extends JLabel implements MoveAble {
 				}
 			}
 		}).start();
-		
-		
+
 	}
 
 	@Override
@@ -180,17 +211,15 @@ public class Player extends JLabel implements MoveAble {
 			public void run() {
 				while (up) {
 					y = y - SPEED;
-					if( y / 10 % 2 == 0 ) {
+					if (y / 10 % 2 == 0) {
 						setIcon(playerUpStep1);
-					}else {
-						
+					} else {
+
 						setIcon(playerUpStep3);
 					}
-				 
-					
-					
+
 					setLocation(x, y);
-					
+
 					try {
 						Thread.sleep(60);
 					} catch (InterruptedException e) {
@@ -213,17 +242,15 @@ public class Player extends JLabel implements MoveAble {
 			public void run() {
 				while (down) {
 					y = y + SPEED;
-					if( y / 10 % 2 == 0 ) {
+					if (y / 10 % 2 == 0) {
 						setIcon(playerDownStep1);
-					}else {
-						
+					} else {
+
 						setIcon(playerDownStep2);
 					}
-				 
-					
-					
+
 					setLocation(x, y);
-					
+
 					try {
 						Thread.sleep(60);
 					} catch (InterruptedException e) {
@@ -234,70 +261,61 @@ public class Player extends JLabel implements MoveAble {
 			}
 		}).start();
 	}
+
+	private void eye() {
+
+		// 0 !- 1 -- toggle
+		new Thread(() -> {
+				
+			
+			while (true) {
+				
+
+				if (isStay) {
+
+					if (isOpenEye) {
+						setIcon(playerEye3);
+					} 
+					else {
+						setIcon(playerStay);
+					}
+					// !true
+					// !false
+					System.out.println("isOpenEye : " + isOpenEye);
+					isOpenEye = !isOpenEye;
+					try {
+						Thread.sleep(800);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}).start();
+		}
+
+
+
 	@Override
 	public void stay() {
-	
-			setIcon(playerStay);
-		
+
+		setIcon(playerStay);
+
 	}
+
 	public void rightStay() {
 		setIcon(playerRightStay);
 	}
+
 	public void leftStay() {
 		setIcon(playerLeftStay);
 	}
+
 	public void upStay() {
 		setIcon(playerUpStay);
 	}
 
-	private void initData() {
-
-		playerStay = new ImageIcon("pjs/player_ver3.png");
-		playerDownStep1 = new ImageIcon("pjs/player_ver3_down_1.png");
-		playerDownStep2 = new ImageIcon("pjs/player_ver3_down_2.png");
-		playerRightStep1 = new ImageIcon("pjs/player_ver3_Right_1.png");
-		playerRightStep2 = new ImageIcon("pjs/player_ver3_Right_2.png");
-		playerRightStep3 = new ImageIcon("pjs/player_ver3_Right_3.png");
-		playerRightStay = new ImageIcon("pjs/player_ver3_Right_Stay.png");
-		playerLeftStep1 = new ImageIcon("pjs/player_ver3_Left_1.png");
-		playerLeftStep3 = new ImageIcon("pjs/player_ver3_Left_3.png");
-		playerLeftStay = new ImageIcon("pjs/player_ver3_Left_Stay.png");
-		playerUpStep1 = new ImageIcon("pjs/player_ver3_Up_step1.png");
-		playerUpStep3 = new ImageIcon("pjs/player_ver3_Up 2.png");
-		playerUpStay = new ImageIcon("pjs/player_ver3__head_+_body_UpStay.png");
-		playerEye1= new ImageIcon("pjs/player_ver3_Eye1.png");
-		playerEye2 = new ImageIcon("pjs/player_ver3_Eye2.png");
-		playerEye3 = new ImageIcon("pjs/player_ver3_Eye3.png");
-		left = false;
-		right = false;
-		up = false;
-		down = false;
-
+	public void playerBag() {
+		setIcon(playerBag);
 	}
-
-	private void setInitLayout() {
-		setIcon(playerStay);
-		setSize(70, 100);
-		setLocation(x, y);
-
-	}
-	private void eye() {
-		// 눈깜빡임
-		while(true){
-			
-		
-		try {
-			Thread.sleep(3000);
-			setIcon(playerEye1);
-			Thread.sleep(3000);
-			setIcon(playerEye2);
-			Thread.sleep(3000);
-			setIcon(playerEye3);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		}
-	}
-		
 
 } // end of player class

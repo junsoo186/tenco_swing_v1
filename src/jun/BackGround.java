@@ -14,6 +14,7 @@ public class BackGround extends JFrame {
 	private JLabel backgroundMap;
 
 	private Player player;
+	private PlayerItem playerItem;
 
 	public BackGround() {
 		initData();
@@ -53,24 +54,44 @@ public class BackGround extends JFrame {
 				switch (e.getKeyCode()) {
 
 				case KeyEvent.VK_LEFT:
-
-					player.left();
+					if (!player.isLeft() ) {
+                        player.left();
+                    }
+					
+					player.setBagFlag(true);
 
 					break;
 
 				case KeyEvent.VK_RIGHT:
 
-					player.right();
+					if (!player.isRight() ) {
+						player.right();
+                    }
+					player.setBagFlag(true);
 
 					break;
 				case KeyEvent.VK_UP:
-					player.up();
+					if (!player.isUp() ) {
+                        player.up();
+                    }
+					player.setBagFlag(true);
 					break;
 				case KeyEvent.VK_DOWN:
 				
 					player.down();
 					System.out.println("아래로");
+					player.setBagFlag(true);
 					break;
+				case KeyEvent.VK_B:
+					
+					player.playerBag();
+					player.setBagFlag(false);
+					break;
+				case KeyEvent.VK_1:
+					
+					
+					break;
+					
 				default:
 					break;
 
@@ -96,6 +117,7 @@ public class BackGround extends JFrame {
 				case KeyEvent.VK_DOWN:
 					// 오른쪽으로 가는 상태 멈춤
 					player.setDown(false);
+
 					player.stay();
 					// 구현
 					break;
